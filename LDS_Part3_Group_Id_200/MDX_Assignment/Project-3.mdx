@@ -1,0 +1,30 @@
+--Assignment 1
+--Show the percentage increase or decrease in total crime gravity with respect to the
+--previous year for each state.
+
+select {[Measures].percent_diff, [Measures].[Crime Gravity], [Measures].prev_year_crime_gravity} on columns,
+nonempty(([Date].[day_month_year].[The Year], [Geography].[State].[State])) on rows
+from [Group_ID_200_DB]
+
+
+--Assignment 2
+--For each gun, show the total crime gravity in percentage with respect to the total
+--crime gravity of all the guns.
+
+select {[Measures].[Crime Gravity], [Measures].[total_crime_gravity]} on columns,
+nonempty([Gun].[Gun Id].[Gun Id]) on rows
+from [Group_ID_200_DB]
+
+
+--Assignment 3
+--Show the incidents having a total gravity score greater or equal to the average
+--gravity score in each state.
+
+with set incidents as
+filter([Incident].[Incident Id].[Incident Id], [Measures].[Crime Gravity] >= [Measures].[Average_Gravity_Score])
+select {[Measures].[Crime Gravity], [Measures].[Average_Gravity_Score]} on columns,
+nonempty(([Geography].[Geography].[State], [Incident].[Incident Id].[Incident Id])) on rows
+from [Group_ID_200_DB]
+
+
+
